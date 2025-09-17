@@ -3,14 +3,60 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <cmath>
 
 using namespace std;
 
-inline float serie (float a, float b) {
+class Complex {
+    public:
+        float R;
+        float I;
+
+        float Z;
+        float fase;
+
+        Complex (bool cart, float a, float b) {
+            if (cart) {     // input cartesiane
+                R = a;
+                I = b;
+
+                Z = sqrt(pow(R, 2) + pow(I, 2));
+                if (R > -0.000005 && R < 0.000005) {
+                    fase = 90 * (I > 0 ? 1 : -1);
+                } else {
+                    fase = atan (I / R);
+                }
+            } else {
+                Z = a;
+                fase = b;
+
+                R = Z * cos (fase);
+                I = Z * sin (fase);
+            }
+        }
+
+        Complex operator + (Complex b) {
+            return Complex (1, R+b.R, I+b.I);
+        }
+        Complex operator - (Complex b) {
+            return Complex (1, R-b.R, I-b.I);
+        }
+
+        Complex operator * (Complex b) {
+            return Complex (0, Z*b.Z, fase+b.fase);
+        }
+        Complex operator / (Complex b) {
+            return Complex (0, Z/b.Z, fase-b.fase);
+        }
+
+
+};
+
+inline Complex serie (Complex a, Complex b) {
     return a + b;
 }
 
-inline float parallel (float a, float b) {
+inline Complex parallel (Complex a, Complex b) {
     return a*b / (a+b);
 }
 
