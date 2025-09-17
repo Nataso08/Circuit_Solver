@@ -22,11 +22,11 @@ void solve_section (vector<string>& tokens, vector<string>::iterator start) {
         vector<string>::iterator O = find (start, start + n, "//");
 
         if (O != start + n) {
-            *O = to_string(parallel (stoi(*(O - 1)), stoi(*(O + 1))));    
+            *O = to_string(parallel (stof(*(O - 1)), stof(*(O + 1))));    
         } else {
             O = find (start, start + n, "+");
 
-            *O = to_string(serie (stoi(*(O - 1)), stoi(*(O + 1))));
+            *O = to_string(serie (stof(*(O - 1)), stof(*(O + 1))));
         }
 
         tokens.erase(O +1);
@@ -73,7 +73,7 @@ void solve (vector<string>& tokens) {
         if (brackets != tokens.end()) {   // esistono parentesi
             solve_brackets (tokens, brackets);
         } else {
-            solve_section (tokens, tokens.end());
+            solve_section (tokens, tokens.begin());
         }
     }
 }
